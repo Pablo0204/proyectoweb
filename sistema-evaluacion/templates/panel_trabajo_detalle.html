@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle del Trabajo</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f4f4f4;
+            margin: 0
+        }
+
+        header {
+            background: #3498db;
+            color: #fff;
+            padding: 20px
+        }
+
+        .contenido {
+            padding: 30px;
+            max-width: 900px;
+            margin: auto
+        }
+
+        h2 {
+            color: #3498db
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1)
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd
+        }
+
+        th {
+            background: #3498db;
+            color: #fff
+        }
+
+        tr:hover {
+            background: #f1f1f1
+        }
+
+        .boton {
+            background: #3498db;
+            color: #fff;
+            padding: 8px 14px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .boton:hover {
+            background: #2980b9
+        }
+
+        .acciones {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px
+        }
+
+        .nota-final {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #3498db
+        }
+
+        .sin-nota {
+            color: #95a5a6;
+            font-style: italic;
+        }
+
+        .mensaje-info {
+            background: #e8f4f8;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Detalle del Trabajo</h1>
+    </header>
+
+    <div class="contenido">
+        <h2>{{ trabajo.titulo }} ({{ trabajo.tipo }})</h2>
+        <p><strong>Estudiante:</strong> {{ estudiante.nombre }}</p>
+
+        {% if criterios %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Criterio</th>
+                    <th>Ponderación (%)</th>
+                    <th>Nota</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for criterio in criterios %}
+                {% set evaluacion = evaluaciones|selectattr("criterio_id","equalto",criterio.id)|first %}
+                <tr>
+                    <td>{{ criterio.nombre }}</td>
+                    <td>{{ criterio.ponderacion }}%</td>
+                    <td>
+                        {% if evaluacion %}
+                        {{ evaluacion.nota }}
+                        {% else %}
+                        <span class="sin-nota">Sin nota</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% if evaluaciones %}
+        <div class="nota-final">
+            Nota Final: {{ nota_final }}
+        </div>
+        {% else %}
+        <div class="mensaje-info">
+            <strong> Todavía no evaluado</strong><br>
+            Este trabajo aún no tiene evaluaciones asignadas.
+        </div>
+        <div class="nota-final">
+            Nota Final: <span class="sin-nota">Sin nota</span>
+        </div>
+        {% endif %}
+        {% else %}
+        <div class="mensaje-info">
+            <strong> Sin criterios definidos</strong><br>
+            Este trabajo no tiene criterios de evaluación configurados.
+        </div>
+        {% endif %}
+
+        <div class="acciones">
+            <a class="boton" href="/generar_acta/{{ trabajo.id }}">📄 Generar Acta PDF</a>
+        </div>
+    </div>
+
+    <div style="padding:20px">
+        <a href="javascript:history.back()" style="
+    display:inline-block;
+    background:#3498db;
+    color:#fff;
+    padding:8px 14px;
+    border-radius:6px;
+    text-decoration:none;
+    font-size:16px;
+  ">⬅ Volver atrás</a>
+    </div>
+</body>
+
+</html>

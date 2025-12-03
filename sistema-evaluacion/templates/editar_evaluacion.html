@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Evaluación</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f4f4f4;
+            padding: 30px
+        }
+
+        h1 {
+            color: #3498db
+        }
+
+        .formulario {
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            margin: 0 auto
+        }
+
+        .campo {
+            margin-bottom: 20px
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #3498db
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box
+        }
+
+        .boton {
+            padding: 10px 20px;
+            background: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px
+        }
+
+        .boton:hover {
+            background: #2980b9
+        }
+
+        .boton-cancelar {
+            padding: 10px 20px;
+            background: #95a5a6;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+            display: inline-block
+        }
+
+        .boton-cancelar:hover {
+            background: #7f8c8d
+        }
+
+        .botones {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px
+        }
+
+        .info {
+            background: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px
+        }
+    </style>
+</head>
+
+<body>
+    <div class="formulario">
+        <h1>Editar Evaluación</h1>
+
+        <div class="info">
+            <p><strong>Trabajo:</strong> {{ trabajo.titulo }}</p>
+            <p><strong>Criterio:</strong> {{ criterio.nombre }}</p>
+            <p><strong>Ponderación:</strong> {{ criterio.ponderacion }}%</p>
+        </div>
+
+        <form method="POST" action="/actualizar_evaluacion/{{ evaluacion.id }}">
+            <div class="campo">
+                <label for="nota">Nota (0 - 100):</label>
+                <input type="number" id="nota" name="nota" step="0.1" min="0" max="100" value="{{ evaluacion.nota }}"
+                    required>
+            </div>
+
+            <div class="botones">
+                <button type="submit" class="boton">💾 Guardar Cambios</button>
+                <a href="/panel/evaluaciones" class="boton-cancelar">❌ Cancelar</a>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

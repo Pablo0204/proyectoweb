@@ -1,0 +1,29 @@
+<div style="padding: 20px;">
+    <h2 style="color: #3498db; margin-bottom: 20px;">🎯 Criterios de Evaluación</h2>
+
+    <p
+        style="background: #e8f4f8; padding: 15px; border-radius: 6px; border-left: 4px solid #3498db; margin-bottom: 20px;">
+        💡 <strong>Nota:</strong> Los criterios se definen al crear un nuevo trabajo. Cada trabajo tiene sus propios
+        criterios específicos.
+    </p>
+
+    <table style="width: 100%; border-collapse: collapse; background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+        <thead>
+            <tr style="background: #3498db; color: white;">
+                <th style="padding: 12px; text-align: left;">Trabajo</th>
+                <th style="padding: 12px; text-align: left;">Criterio</th>
+                <th style="padding: 12px; text-align: center;">Ponderación (%)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for criterio in Criterio.query.all() %}
+            {% set trabajo = Trabajo.query.get(criterio.trabajo_id) %}
+            <tr style="border-bottom: 1px solid #ddd;">
+                <td style="padding: 12px;">{{ trabajo.titulo if trabajo else 'N/A' }}</td>
+                <td style="padding: 12px;">{{ criterio.nombre }}</td>
+                <td style="padding: 12px; text-align: center;">{{ criterio.ponderacion }}%</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

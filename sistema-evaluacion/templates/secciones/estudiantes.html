@@ -1,0 +1,40 @@
+<div style="padding: 20px;">
+    <h2 style="color: #3498db; margin-bottom: 20px;">👨‍🎓 Gestión de Estudiantes</h2>
+
+    <button onclick="location.href='/agregar_estudiante_web'" style="
+    background: #3498db;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    font-size: 16px;
+  ">➕ Agregar Estudiante</button>
+
+    <table style="width: 100%; border-collapse: collapse; background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+        <thead>
+            <tr style="background: #3498db; color: white;">
+                <th style="padding: 12px; text-align: left;">ID</th>
+                <th style="padding: 12px; text-align: left;">Nombre</th>
+                <th style="padding: 12px; text-align: left;">Correo</th>
+                <th style="padding: 12px; text-align: center;">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for e in Estudiante.query.all() %}
+            <tr style="border-bottom: 1px solid #ddd;">
+                <td style="padding: 12px;">{{ e.id }}</td>
+                <td style="padding: 12px;">{{ e.nombre }}</td>
+                <td style="padding: 12px;">{{ e.correo }}</td>
+                <td style="padding: 12px; text-align: center;">
+                    <a href="/eliminar_estudiante/{{ e.id }}" onclick="return confirm('¿Eliminar este estudiante?')"
+                        style="background: #e74c3c; color: white; padding: 6px 12px; border-radius: 4px; text-decoration: none;">
+                        🗑️ Eliminar
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

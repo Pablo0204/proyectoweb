@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Agregar Estudiante</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f4f4f4;
+            padding: 30px
+        }
+
+        h1 {
+            color: #3498db
+        }
+
+        form {
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 500px
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+            color: #3498db
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px
+        }
+
+        button:hover {
+            background: #2980b9
+        }
+
+        .mensaje {
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 4px
+        }
+
+        .exito {
+            background: #d4edda;
+            color: #155724
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Agregar Estudiante</h1>
+    <form id="formEstudiante">
+        <label>Nombre:</label>
+        <input type="text" id="nombre" required>
+
+        <label>Correo:</label>
+        <input type="email" id="correo" required>
+
+        <button type="submit">Guardar Estudiante</button>
+    </form>
+
+    <div id="mensaje"></div>
+
+    <br>
+    <a href="/panel/estudiantes"
+        style="display:inline-block;background:#3498db;color:#fff;padding:8px 14px;border-radius:6px;text-decoration:none;">
+        ⬅ Volver
+    </a>
+
+    <script>
+        document.getElementById('formEstudiante').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const nombre = document.getElementById('nombre').value;
+            const correo = document.getElementById('correo').value;
+
+            const response = await fetch('/agregar_estudiante', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nombre, correo })
+            });
+
+            const data = await response.json();
+            const mensaje = document.getElementById('mensaje');
+
+            if (response.ok) {
+                mensaje.className = 'mensaje exito';
+                mensaje.textContent = data.mensaje;
+                document.getElementById('formEstudiante').reset();
+                setTimeout(() => window.location.href = '/panel/estudiantes', 1500);
+            } else {
+                mensaje.className = 'mensaje error';
+                mensaje.textContent = data.error || 'Error al agregar estudiante';
+            }
+        });
+    </script>
+</body>
+
+</html>

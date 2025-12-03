@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Agregar Evaluación</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f4f4f4;
+            padding: 30px
+        }
+
+        h1 {
+            color: #3498db
+        }
+
+        form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 5px #ccc
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px
+        }
+
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: center
+        }
+
+        th {
+            background: #3498db;
+            color: #fff
+        }
+
+        input[type="number"] {
+            width: 80px;
+            padding: 6px
+        }
+
+        .boton {
+            margin-top: 20px;
+            padding: 10px 16px;
+            background: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer
+        }
+
+        .boton:hover {
+            background: #1a252f
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Agregar Evaluación para: {{ trabajo.titulo }} ({{ trabajo.tipo }})</h1>
+    <p>Estudiante: {{ estudiante.nombre }}</p>
+
+    <form method="post" action="/guardar_evaluacion/{{ trabajo.id }}">
+        <table>
+            <tr>
+                <th>Criterio</th>
+                <th>Ponderación (%)</th>
+                <th>Nota</th>
+            </tr>
+            {% for c in criterios %}
+            <tr>
+                <td>{{ c.nombre }}</td>
+                <td>{{ c.ponderacion }}</td>
+                <td>
+                    <input type="number" name="nota_{{ c.id }}" step="0.1" min="0" max="100" required>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        <button type="submit" class="boton">Guardar Evaluación</button>
+    </form>
+
+    <br>
+    <a href="javascript:history.back()" class="boton">← Volver atrás</a>
+</body>
+
+</html>

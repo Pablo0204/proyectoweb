@@ -1,0 +1,23 @@
+<div style="padding: 20px;">
+    <h2 style="color: #3498db; margin-bottom: 20px;">⚙️ Configuración del Sistema</h2>
+
+    <div
+        style="background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 20px;">
+        <h3 style="color: #667eea; margin-bottom: 15px;">Información del Usuario</h3>
+        <p><strong>Usuario:</strong> {{ usuario.nombre }}</p>
+        <p><strong>Email:</strong> {{ usuario.email if usuario.email else 'No configurado' }}</p>
+    </div>
+
+    <div style="background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+        <h3 style="color: #667eea; margin-bottom: 15px;">Opciones</h3>
+        <button onclick="if(confirm('¿Cerrar sesión?')) location.href='/logout'" style="
+      background: #e74c3c;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+    ">🚪 Cerrar Sesión</button>
+    </div>
+</div>

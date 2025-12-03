@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Panel de Estudiantes</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f4f4f4;
+            margin: 0
+        }
+
+        header {
+            background: #3498db;
+            color: #fff;
+            padding: 20px
+        }
+
+        .contenido {
+            padding: 30px;
+            max-width: 1000px;
+            margin: auto
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1)
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd
+        }
+
+        th {
+            background: #3498db;
+            color: #fff
+        }
+
+        tr:hover {
+            background: #f1f1f1
+        }
+
+        .boton {
+            background: #3498db;
+            color: #fff;
+            padding: 8px 14px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin: 5px 2px
+        }
+
+        .boton:hover {
+            background: #2980b9
+        }
+
+        .boton-eliminar {
+            background: #e74c3c;
+            color: #fff;
+            padding: 8px 14px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block
+        }
+
+        .boton-eliminar:hover {
+            background: #c0392b
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Panel de Estudiantes</h1>
+    </header>
+
+    <div class="contenido">
+        <a class="boton" href="/agregar_estudiante_web">➕ Agregar Estudiante</a>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Correo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for e in estudiantes %}
+                <tr>
+                    <td>{{ e.id }}</td>
+                    <td>{{ e.nombre }}</td>
+                    <td>{{ e.correo }}</td>
+                    <td>
+                        <a class="boton-eliminar" href="/eliminar_estudiante/{{ e.id }}"
+                            onclick="return confirm('¿Estás seguro de eliminar este estudiante? Se eliminarán también todos sus trabajos y evaluaciones.')">
+                            🗑️ Eliminar
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <br>
+        <a href="/dashboard"
+            style="display:inline-block;background:#3498db;color:#fff;padding:8px 14px;border-radius:6px;text-decoration:none;">
+            ⬅ Volver al Dashboard
+        </a>
+    </div>
+</body>
+
+</html>

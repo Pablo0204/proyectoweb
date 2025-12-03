@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Trabajo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+        }
+
+        h1 {
+            color: #667eea;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 32px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #3498db;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+
+        input[type="text"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .seccion-criterios {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            margin-top: 30px;
+        }
+
+        .criterio-item {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 2px solid #e0e0e0;
+            position: relative;
+        }
+
+        .criterio-inputs {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .criterio-item input {
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .btn-eliminar-criterio {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .btn-eliminar-criterio:hover {
+            background: #c0392b;
+            transform: scale(1.1);
+        }
+
+        .btn-agregar-criterio {
+            width: 100%;
+            padding: 12px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 15px;
+        }
+
+        .btn-agregar-criterio:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
+        }
+
+        .total-porcentaje {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #3498db;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: all 0.3s;
+        }
+
+        button[type="submit"]:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .alerta {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .alerta.error {
+            background: #fee;
+            color: #c33;
+            border: 1px solid #fcc;
+        }
+
+        .alerta.exito {
+            background: #efe;
+            color: #3c3;
+            border: 1px solid #cfc;
+        }
+
+        .btn-volver {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #95a5a6;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .btn-volver:hover {
+            background: #7f8c8d;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>📝 Agregar Nuevo Trabajo</h1>
+
+        <form id="formTrabajo">
+            <div class="form-group">
+                <label for="titulo">Título del Trabajo</label>
+                <input type="text" id="titulo" name="titulo" required placeholder="Ej: Proyecto Final de Física">
+            </div>
+
+            <div class="form-group">
+                <label for="tipo">Tipo de Trabajo</label>
+                <input type="text" id="tipo" name="tipo" required placeholder="Ej: Informe, Presentación, Tesis, etc.">
+            </div>
+
+            <div class="form-group">
+                <label for="estudiante_id">Estudiante</label>
+                <select id="estudiante_id" name="estudiante_id" required>
+                    <option value="">Selecciona un estudiante</option>
+                    {% for e in estudiantes %}
+                    <option value="{{ e.id }}">{{ e.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="seccion-criterios">
+                <h3 style="margin-top:0; color: #667eea;"> Criterios de Evaluación</h3>
+                <div id="criterios-container">
+                </div>
+
+                <button type="button" class="btn-agregar-criterio" onclick="agregarCriterio()">
+                    Agregar Criterio
+                </button>
+
+                <div id="total-porcentaje" class="total-porcentaje">
+                    Total: 0%
+                </div>
+            </div>
+
+            <div id="alerta" class="alerta error"></div>
+
+            <button type="submit" id="btn-guardar"> Guardar Trabajo</button>
+        </form>
+
+        <a href="/panel/trabajos" class="btn-volver">⬅ Volver a Trabajos</a>
+    </div>
+
+    <script>
+        let criterioCount = 0;
+
+        function agregarCriterio() {
+            criterioCount++;
+            const container = document.getElementById('criterios-container');
+            const criterioDiv = document.createElement('div');
+            criterioDiv.className = 'criterio-item';
+            criterioDiv.id = `criterio-${criterioCount}`;
+
+            criterioDiv.innerHTML = `
+        <button type="button" class="btn-eliminar-criterio" onclick="eliminarCriterio(${criterioCount})">×</button>
+        <div class="criterio-inputs">
+          <div>
+            <input type="text" name="criterio_nombre[]" placeholder="Nombre del criterio" required>
+          </div>
+          <div>
+            <input type="number" name="criterio_ponderacion[]" placeholder="%" min="0" max="100" step="0.1" required oninput="calcularTotal()">
+          </div>
+        </div>
+      `;
+
+            container.appendChild(criterioDiv);
+            calcularTotal();
+        }
+
+        function eliminarCriterio(id) {
+            const criterio = document.getElementById(`criterio-${id}`);
+            if (criterio) {
+                criterio.remove();
+                calcularTotal();
+            }
+        }
+
+        function calcularTotal() {
+            const ponderaciones = document.querySelectorAll('input[name="criterio_ponderacion[]"]');
+            let total = 0;
+
+            ponderaciones.forEach(input => {
+                const valor = parseFloat(input.value) || 0;
+                total += valor;
+            });
+
+            const totalDiv = document.getElementById('total-porcentaje');
+            totalDiv.textContent = `Total: ${total.toFixed(1)}%`;
+
+            if (total === 100) {
+                totalDiv.style.background = '#d4edda';
+                totalDiv.style.color = '#155724';
+            } else {
+                totalDiv.style.background = '#fff3cd';
+                totalDiv.style.color = '#856404';
+            }
+        }
+
+        document.getElementById('formTrabajo').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const ponderaciones = document.querySelectorAll('input[name="criterio_ponderacion[]"]');
+            let total = 0;
+            ponderaciones.forEach(input => {
+                total += parseFloat(input.value) || 0;
+            });
+
+            const alerta = document.getElementById('alerta');
+
+            if (ponderaciones.length === 0) {
+                alerta.className = 'alerta error';
+                alerta.textContent = 'Debes agregar al menos un criterio de evaluación';
+                alerta.style.display = 'block';
+                return;
+            }
+
+            if (Math.abs(total - 100) > 0.01) {
+                alerta.className = 'alerta error';
+                alerta.textContent = `La suma de las ponderaciones debe ser 100%. Actual: ${total.toFixed(1)}%`;
+                alerta.style.display = 'block';
+                return;
+            }
+
+            const titulo = document.getElementById('titulo').value;
+            const tipo = document.getElementById('tipo').value;
+            const estudiante_id = document.getElementById('estudiante_id').value;
+            
+            const criterios = [];
+            const nombreInputs = document.querySelectorAll('input[name="criterio_nombre[]"]');
+            const ponderacionInputs = document.querySelectorAll('input[name="criterio_ponderacion[]"]');
+            
+            for (let i = 0; i < nombreInputs.length; i++) {
+                criterios.push({
+                    nombre: nombreInputs[i].value,
+                    ponderacion: parseFloat(ponderacionInputs[i].value)
+                });
+            }
+            
+            const payload = {
+                titulo: titulo,
+                tipo: tipo,
+                estudiante_id: parseInt(estudiante_id),
+                criterios: criterios
+            };
+
+            try {
+                const response = await fetch('/agregar_trabajo', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alerta.className = 'alerta exito';
+                    alerta.textContent = data.mensaje || 'Trabajo agregado correctamente';
+                    alerta.style.display = 'block';
+
+                    setTimeout(() => {
+                        window.location.href = '/panel/trabajos';
+                    }, 1500);
+                } else {
+                    alerta.className = 'alerta error';
+                    alerta.textContent = data.error || 'Error al agregar el trabajo';
+                    alerta.style.display = 'block';
+                }
+            } catch (error) {
+                alerta.className = 'alerta error';
+                alerta.textContent = 'Error de conexión con el servidor';
+                alerta.style.display = 'block';
+            }
+        });
+
+        agregarCriterio();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Panel de Evaluaciones</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f4f4f4;
+            margin: 0
+        }
+
+        header {
+            background: #3498db;
+            color: #fff;
+            padding: 20px
+        }
+
+        .contenido {
+            padding: 30px;
+            max-width: 1000px;
+            margin: auto
+        }
+
+        h2 {
+            color: #3498db;
+            margin-top: 30px
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1)
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd
+        }
+
+        th {
+            background: #3498db;
+            color: #fff
+        }
+
+        tr:hover {
+            background: #f1f1f1
+        }
+
+        .boton {
+            background: #3498db;
+            color: #fff;
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin: 2px
+        }
+
+        .boton:hover {
+            background: #2980b9
+        }
+
+        .boton-editar {
+            background: #27ae60;
+            color: #fff;
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin: 2px
+        }
+
+        .boton-editar:hover {
+            background: #229954
+        }
+
+        .boton-eliminar {
+            background: #e74c3c;
+            color: #fff;
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin: 2px
+        }
+
+        .boton-eliminar:hover {
+            background: #c0392b
+        }
+
+        .nota-final {
+            margin-top: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #3498db
+        }
+
+        .acciones {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px
+        }
+
+        .acciones-eval {
+            display: flex;
+            gap: 5px;
+            justify-content: center
+        }
+
+        .alerta-sin-evaluaciones {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+
+        .alerta-sin-evaluaciones p {
+            margin: 0;
+            color: #856404;
+        }
+
+        .mensaje-vacio {
+            text-align: center;
+            padding: 40px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Panel de Evaluaciones</h1>
+    </header>
+
+    <div class="contenido">
+        {% set trabajos = Trabajo.query.all() %}
+
+        {% if trabajos|length == 0 %}
+        <div class="mensaje-vacio">
+            <h2 style="color:#7f8c8d;">📝 No hay trabajos registrados</h2>
+            <p style="color:#95a5a6;">Crea un trabajo primero para poder agregar evaluaciones.</p>
+            <a class="boton" href="/agregar_trabajo_web">➕ Agregar Trabajo</a>
+        </div>
+        {% else %}
+        {% for trabajo in trabajos %}
+        {% set estudiante = Estudiante.query.get(trabajo.estudiante_id) %}
+        {% set evaluaciones_trabajo = evaluaciones|selectattr("trabajo_id","equalto",trabajo.id)|list %}
+
+        <h2>Trabajo: {{ trabajo.titulo }} ({{ trabajo.tipo }})</h2>
+        <p><strong>Estudiante:</strong> {{ estudiante.nombre }}</p>
+
+        {% if evaluaciones_trabajo|length == 0 %}
+        <div class="alerta-sin-evaluaciones">
+            <p>⚠️ Este trabajo aún no tiene evaluaciones. <a href="/agregar_evaluacion/{{ trabajo.id }}"
+                    style="color:#0066cc; text-decoration:underline;">Agregar evaluación</a></p>
+        </div>
+        {% else %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Criterio</th>
+                    <th>Nota</th>
+                    <th>Ponderación</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ev in evaluaciones_trabajo %}
+                {% set criterio = criterios|selectattr("id","equalto",ev.criterio_id)|first %}
+                <tr>
+                    <td>{{ criterio.nombre if criterio else 'N/A' }}</td>
+                    <td>{{ ev.nota }}</td>
+                    <td>{{ criterio.ponderacion if criterio else 'N/A' }}</td>
+                    <td class="acciones-eval">
+                        <a class="boton-editar" href="/editar_evaluacion/{{ ev.id }}">✏️</a>
+                        <a class="boton-eliminar" href="/eliminar_evaluacion/{{ ev.id }}"
+                            onclick="return confirm('¿Estás seguro de eliminar esta evaluación?')">🗑️</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="nota-final">
+            Nota Final: {{ notas_finales.get(trabajo.id, 'N/A') }}
+        </div>
+        {% endif %}
+
+        <div class="acciones">
+            <a class="boton" href="/panel/trabajos/{{ trabajo.id }}">🔎 Ver Detalle</a>
+            {% if evaluaciones_trabajo|length > 0 %}
+            <a class="boton" href="/generar_acta/{{ trabajo.id }}">📄 Generar Acta PDF</a>
+            {% endif %}
+            <a class="boton" href="/agregar_evaluacion/{{ trabajo.id }}">➕ Agregar Evaluación</a>
+        </div>
+        <hr>
+        {% endfor %}
+        {% endif %}
+    </div>
+
+    <div style="padding:20px">
+        <a href="javascript:history.back()" style="
+      display:inline-block;
+      background:#3498db;
+      color:#fff;
+      padding:8px 14px;
+      border-radius:6px;
+      text-decoration:none;
+      font-size:16px;
+    ">⬅ Volver atrás</a>
+    </div>
+</body>
+
+</html>

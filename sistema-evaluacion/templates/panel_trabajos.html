@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Panel de Trabajos</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f4f4f4;
+            margin: 0
+        }
+
+        header {
+            background: #3498db;
+            color: #fff;
+            padding: 20px
+        }
+
+        .contenido {
+            padding: 30px;
+            max-width: 1200px;
+            margin: auto
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1)
+        }
+
+        th td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd
+        }
+
+        th {
+            background: #3498db;
+            color: #fff
+        }
+
+        tr:hover {
+            background: #f1f1f1
+        }
+
+        .boton {
+            background: #3498db;
+            color: #fff;
+            padding: 8px 14px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin: 5px 2px
+        }
+
+        .boton:hover {
+            background: #2980b9
+        }
+
+        .boton-editar {
+            background: #27ae60;
+            color: #fff;
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            display: inline-block;
+            margin: 2px
+        }
+
+        .boton-editar:hover {
+            background: #229954
+        }
+
+        .boton-eliminar {
+            background: #e74c3c;
+            color: #fff;
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            display: inline-block;
+            margin: 2px
+        }
+
+        .boton-eliminar:hover {
+            background: #c0392b
+        }
+
+        .boton-ver {
+            background: #3498db;
+            color: #fff;
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            display: inline-block;
+            margin: 2px
+        }
+
+        .boton-ver:hover {
+            background: #2980b9
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Panel de Trabajos</h1>
+    </header>
+
+    <div class="contenido">
+        <a class="boton" href="/agregar_trabajo_web">➕ Agregar Trabajo</a>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Título</th>
+                    <th>Tipo</th>
+                    <th>Estudiante</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for t in trabajos %}
+                {% set estudiante = Estudiante.query.get(t.estudiante_id) %}
+                <tr>
+                    <td>{{ t.id }}</td>
+                    <td>{{ t.titulo }}</td>
+                    <td>{{ t.tipo }}</td>
+                    <td>{{ estudiante.nombre if estudiante else 'N/A' }}</td>
+                    <td>
+                        <a class="boton-ver" href="/panel/trabajos/{{ t.id }}"> Detalles</a>
+                        <a class="boton-editar" href="/editar_trabajo/{{ t.id }}">✏️</a>
+                        <a class="boton-eliminar" href="/eliminar_trabajo/{{ t.id }}"
+                            onclick="return confirm('¿Estás seguro de eliminar este trabajo?')">🗑️</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <br>
+        <a href="javascript:history.back()"
+            style="display:inline-block;background:#3498db;color:#fff;padding:8px 14px;border-radius:6px;text-decoration:none;">
+            ⬅ Volver atrás
+        </a>
+    </div>
+</body>
+
+</html>

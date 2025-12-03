@@ -1,0 +1,42 @@
+<div style="padding: 20px;">
+    <h2 style="color: #3498db; margin-bottom: 20px;">📄 Historial de Actas</h2>
+
+    <p
+        style="background: #e8f4f8; padding: 15px; border-radius: 6px; border-left: 4px solid #3498db; margin-bottom: 20px;">
+        💡 <strong>Información:</strong> Las actas se generan desde el panel de evaluaciones. Cada acta se genera en PDF
+        para el trabajo correspondiente.
+    </p>
+
+    <table style="width: 100%; border-collapse: collapse; background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+        <thead>
+            <tr style="background: #3498db; color: white;">
+                <th style="padding: 12px; text-align: left;">Trabajo</th>
+                <th style="padding: 12px; text-align: left;">Estudiante</th>
+                <th style="padding: 12px; text-align: left;">Tipo</th>
+                <th style="padding: 12px; text-align: center;">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for trabajo in Trabajo.query.all() %}
+            {% set estudiante = Estudiante.query.get(trabajo.estudiante_id) %}
+            {% set tiene_evaluaciones = Evaluacion.query.filter_by(trabajo_id=trabajo.id).first() %}
+            {% if tiene_evaluaciones %}
+            <tr style="border-bottom: 1px solid #ddd;">
+                <td style="padding: 12px;">{{ trabajo.titulo }}</td>
+                <td style="padding: 12px;">{{ estudiante.nombre if estudiante else 'N/A' }}</td>
+                <td style="padding: 12px;">{{ trabajo.tipo }}</td>
+                <td style="padding: 12px; text-align: center;">
+                    <a href="/generar_acta/{{ trabajo.id }}" target="_blank" style="
+            background: #27ae60;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+          ">📄 Generar PDF</a>
+                </td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

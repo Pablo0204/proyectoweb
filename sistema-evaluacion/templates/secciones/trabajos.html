@@ -1,0 +1,45 @@
+<div style="padding: 20px;">
+    <h2 style="color: #3498db; margin-bottom: 20px;">📝 Gestión de Trabajos</h2>
+
+    <button onclick="location.href='/agregar_trabajo_web'" style="
+    background: #3498db;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    font-size: 16px;
+  ">➕ Agregar Trabajo</button>
+
+    <table style="width: 100%; border-collapse: collapse; background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+        <thead>
+            <tr style="background: #3498db; color: white;">
+                <th style="padding: 12px; text-align: left;">ID</th>
+                <th style="padding: 12px; text-align: left;">Título</th>
+                <th style="padding: 12px; text-align: left;">Tipo</th>
+                <th style="padding: 12px; text-align: left;">Estudiante</th>
+                <th style="padding: 12px; text-align: center;">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for t in Trabajo.query.all() %}
+            {% set estudiante = Estudiante.query.get(t.estudiante_id) %}
+            <tr style="border-bottom: 1px solid #ddd;">
+                <td style="padding: 12px;">{{ t.id }}</td>
+                <td style="padding: 12px;">{{ t.titulo }}</td>
+                <td style="padding: 12px;">{{ t.tipo }}</td>
+                <td style="padding: 12px;">{{ estudiante.nombre if estudiante else 'N/A' }}</td>
+                <td style="padding: 12px; text-align: center;">
+                    <a href="/panel/trabajos/{{ t.id }}"
+                        style="background: #3498db; color: white; padding: 6px 12px; border-radius: 4px; text-decoration: none; margin: 2px;">👁️</a>
+                    <a href="/editar_trabajo/{{ t.id }}"
+                        style="background: #27ae60; color: white; padding: 6px 12px; border-radius: 4px; text-decoration: none; margin: 2px;">✏️</a>
+                    <a href="/eliminar_trabajo/{{ t.id }}" onclick="return confirm('¿Eliminar?')"
+                        style="background: #e74c3c; color: white; padding: 6px 12px; border-radius: 4px; text-decoration: none; margin: 2px;">🗑️</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

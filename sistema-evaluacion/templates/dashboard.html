@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - Sistema de Evaluación</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f4f7fa;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: #3498db;
+            color: white;
+            padding: 20px 40px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .container {
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex: 1;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .card-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: #3498db;
+            margin-bottom: 10px;
+        }
+
+        .card-description {
+            color: #7f8c8d;
+            line-height: 1.6;
+        }
+
+        footer {
+            background: #3498db;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>📊 Sistema de Evaluación Académica</h1>
+        <p>Bienvenido, {{ usuario.nombre }}</p>
+    </header>
+
+    <div class="container">
+        <div class="grid">
+            <a href="/panel/estudiantes" class="card">
+                <div class="card-icon">👨‍🎓</div>
+                <div class="card-title">Estudiantes</div>
+                <div class="card-description">Gestiona el registro de estudiantes</div>
+            </a>
+
+            <a href="/panel/trabajos" class="card">
+                <div class="card-icon">📝</div>
+                <div class="card-title">Trabajos</div>
+                <div class="card-description">Administra trabajos académicos</div>
+            </a>
+
+            <a href="/panel/evaluaciones" class="card">
+                <div class="card-icon">📋</div>
+                <div class="card-title">Evaluaciones</div>
+                <div class="card-description">Revisa y gestiona evaluaciones</div>
+            </a>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 Sistema de Evaluación Académica | Universidad Adventista de Chile</p>
+    </footer>
+</body>
+
+</html>

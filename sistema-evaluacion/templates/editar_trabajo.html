@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Trabajo</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f4f4f4;
+            padding: 30px
+        }
+
+        h1 {
+            color: #3498db
+        }
+
+        form {
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 500px
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+            color: #3498db
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px
+        }
+
+        button:hover {
+            background: #2980b9
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Editar Trabajo</h1>
+    <form method="POST" action="/actualizar_trabajo/{{ trabajo.id }}">
+        <label>Título:</label>
+        <input type="text" name="titulo" value="{{ trabajo.titulo }}" required>
+
+        <label>Tipo:</label>
+        <input type="text" name="tipo" value="{{ trabajo.tipo }}" required placeholder="Ej: Informe, Presentación, Tesis, etc.">
+
+        <label>Estudiante:</label>
+        <select name="estudiante_id" required>
+            {% for e in Estudiante.query.all() %}
+            <option value="{{ e.id }}" {% if e.id==trabajo.estudiante_id %}selected{% endif %}>
+                {{ e.nombre }}
+            </option>
+            {% endfor %}
+        </select>
+
+        <button type="submit">Actualizar Trabajo</button>
+    </form>
+
+    <br>
+    <a href="/panel/trabajos"
+        style="display:inline-block;background:#3498db;color:#fff;padding:8px 14px;border-radius:6px;text-decoration:none;">
+        ⬅ Volver
+    </a>
+</body>
+
+</html>
